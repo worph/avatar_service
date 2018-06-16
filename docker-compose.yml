@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+  default-avatar-image-service:
+    image: registry.admin.rphstudio.net/default-avatar-image-service:latest
+    expose:
+      - "80"
+    networks:
+      - webtraefik
+    labels:
+      - "traefik.backend=default-avatar-image-service"
+      - "traefik.docker.network=webtraefik"
+      - "traefik.enable=true"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:avatar.admin.rphstudio.net;PathPrefixStrip: /avatar"
+      - "traefik.frontend.entryPoints=http,https"
+      
+  username-generator-service:
+    image: registry.admin.rphstudio.net/username-generator:latest
+    expose:
+      - "80"
+    networks:
+      - webtraefik
+    labels:
+      - "traefik.backend=username-generator-service"
+      - "traefik.docker.network=webtraefik"
+      - "traefik.enable=true"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:avatar.admin.rphstudio.net;PathPrefixStrip: /username"
+      - "traefik.frontend.entryPoints=http,https"
+      
+networks:
+  webtraefik:
+    external: true
